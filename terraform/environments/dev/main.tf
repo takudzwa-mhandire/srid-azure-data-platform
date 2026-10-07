@@ -71,3 +71,72 @@ resource "azurerm_databricks_workspace" "data_platform" {
     managed_by  = "terraform"
   }
 }
+resource "azurerm_log_analytics_workspace" "platform" {
+  name                = var.log_analytics_workspace_name
+  location            = azurerm_resource_group.data_dev.location
+  resource_group_name = azurerm_resource_group.data_dev.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+
+  tags = {
+    environment = var.environment
+    project     = "srid-azure-data-platform"
+    managed_by  = "terraform"
+  }
+}
+resource "azurerm_monitor_diagnostic_setting" "data_factory" {
+  name                       = "diag-adf-srid-data-dev"
+  target_resource_id         = azurerm_data_factory.data_factory.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.platform.id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
+resource "azurerm_monitor_diagnostic_setting" "storage_blob" {
+  name                       = "diag-st-srid-data-dev"
+  target_resource_id         = "${azurerm_storage_account.data_lake.id}/blobServices/default"
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.platform.id
+
+  enabled_log {
+    category = "StorageRead"
+  }
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "Transaction"
+  }
+}
+resource "azurerm_monitor_diagnostic_setting" "key_vault" {
+  name                       = "diag-kv-srid-data-dev"
+  target_resource_id         = azurerm_key_vault.data_platform.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.platform.id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
+resource "azurerm_monitor_diagnostic_setting" "databricks" {
+  name                       = "diag-dbw-srid-data-dev"
+  target_resource_id         = azurerm_databricks_workspace.data_platform.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.platform.id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+}

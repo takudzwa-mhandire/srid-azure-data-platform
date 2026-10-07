@@ -16,3 +16,6 @@ output "data_factory_name" {
 output "databricks_workspace_name" {
   value = azurerm_databricks_workspace.data_platform.name
 }
+output "log_analytics_workspace_name" {
+  value = azurerm_log_analytics_workspace.platform.name
+}

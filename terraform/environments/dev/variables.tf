@@ -31,3 +31,8 @@ variable "databricks_workspace_name" {
   description = "Name of the DEV Azure Databricks Workspace"
   type        = string
 }
+
+variable "log_analytics_workspace_name" {
+  description = "Name of the DEV Log Analytics Workspace"
+  type        = string
+}

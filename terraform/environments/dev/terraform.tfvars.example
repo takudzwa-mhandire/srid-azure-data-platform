@@ -1,2 +1,3 @@
 data_factory_name         = "adf-srid-data-dev-zan"
 databricks_workspace_name = "dbw-srid-data-dev-zan"
+log_analytics_workspace_name = "law-srid-data-dev-zan"
