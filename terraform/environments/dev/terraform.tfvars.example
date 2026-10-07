@@ -1,0 +1,2 @@
+data_factory_name         = "adf-srid-data-dev-zan"
+databricks_workspace_name = "dbw-srid-data-dev-zan"

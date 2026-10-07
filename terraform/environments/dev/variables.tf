@@ -22,3 +22,12 @@ variable "key_vault_name" {
   description = "Name of the DEV Azure Key Vault"
   type        = string
 }
+variable "data_factory_name" {
+  description = "Name of the DEV Azure Data Factory"
+  type        = string
+}
+
+variable "databricks_workspace_name" {
+  description = "Name of the DEV Azure Databricks Workspace"
+  type        = string
+}

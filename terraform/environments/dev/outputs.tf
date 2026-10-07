@@ -9,3 +9,10 @@ output "storage_account_name" {
 output "key_vault_name" {
   value = azurerm_key_vault.data_platform.name
 }
+output "data_factory_name" {
+  value = azurerm_data_factory.data_factory.name
+}
+
+output "databricks_workspace_name" {
+  value = azurerm_databricks_workspace.data_platform.name
+}

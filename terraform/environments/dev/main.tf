@@ -43,3 +43,31 @@ resource "azurerm_key_vault" "data_platform" {
     managed_by  = "terraform"
   }
 }
+
+resource "azurerm_data_factory" "data_factory" {
+  name                = var.data_factory_name
+  location            = azurerm_resource_group.data_dev.location
+  resource_group_name = azurerm_resource_group.data_dev.name
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  tags = {
+    environment = var.environment
+    project     = "srid-azure-data-platform"
+    managed_by  = "terraform"
+  }
+}
+resource "azurerm_databricks_workspace" "data_platform" {
+  name                = var.databricks_workspace_name
+  resource_group_name = azurerm_resource_group.data_dev.name
+  location            = azurerm_resource_group.data_dev.location
+  sku                 = "premium"
+
+  tags = {
+    environment = var.environment
+    project     = "srid-azure-data-platform"
+    managed_by  = "terraform"
+  }
+}
