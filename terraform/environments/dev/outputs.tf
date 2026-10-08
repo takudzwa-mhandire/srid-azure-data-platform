@@ -19,3 +19,6 @@ output "databricks_workspace_name" {
 output "log_analytics_workspace_name" {
   value = azurerm_log_analytics_workspace.platform.name
 }
+output "databricks_access_connector_name" {
+  value = azurerm_databricks_access_connector.data_platform.name
+}

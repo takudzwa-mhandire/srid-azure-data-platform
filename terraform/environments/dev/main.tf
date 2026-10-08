@@ -140,3 +140,34 @@ resource "azurerm_monitor_diagnostic_setting" "databricks" {
     category_group = "allLogs"
   }
 }
+resource "azurerm_role_assignment" "adf_storage_blob_contributor" {
+  scope                = azurerm_storage_account.data_lake.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_data_factory.data_factory.identity[0].principal_id
+}
+resource "azurerm_role_assignment" "adf_key_vault_secrets_user" {
+  scope                = azurerm_key_vault.data_platform.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_data_factory.data_factory.identity[0].principal_id
+}
+resource "azurerm_databricks_access_connector" "data_platform" {
+  name                = var.databricks_access_connector_name
+  resource_group_name = azurerm_resource_group.data_dev.name
+  location            = azurerm_resource_group.data_dev.location
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  tags = {
+    environment = var.environment
+    project     = "srid-azure-data-platform"
+    managed_by  = "terraform"
+  }
+}
+
+resource "azurerm_role_assignment" "databricks_storage_blob_contributor" {
+  scope                = azurerm_storage_account.data_lake.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_databricks_access_connector.data_platform.identity[0].principal_id
+}
