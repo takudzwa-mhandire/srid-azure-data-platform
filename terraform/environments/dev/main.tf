@@ -171,3 +171,15 @@ resource "azurerm_role_assignment" "databricks_storage_blob_contributor" {
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_databricks_access_connector.data_platform.identity[0].principal_id
 }
+resource "azurerm_storage_data_lake_gen2_filesystem" "data_zones" {
+  for_each = toset([
+    "landing",
+    "bronze",
+    "silver",
+    "gold",
+    "quarantine"
+  ])
+
+  name               = each.value
+  storage_account_id = azurerm_storage_account.data_lake.id
+}
