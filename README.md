@@ -147,27 +147,35 @@ The final report contains four pages.
 
 Management-level view across sales, finance, inventory and procurement.
 
-![Executive Overview](docs/images/Exec%20Overview.png)
+<p align="center">
+  <img src="docs/images/Exec%20Overview.png" width="850">
+</p>
 
 ### Sales & Customers
 
 Customer performance, sales channels, industry analysis and monthly sales trends.
 
-![Sales and Customers](docs/images/Sales%20%26%20Cust.png)
+<p align="center">
+  <img src="docs/images/Sales%20%26%20Cust.png" width="850">
+</p>
 
 ### Inventory & Procurement
 
 Inventory position, supplier activity, purchasing and procurement trends.
 
-![Inventory and Procurement](docs/images/Inv%20%26%20Proc.png)
+<p align="center">
+  <img src="docs/images/Inv%20%26%20Proc.png" width="850">
+</p>
 
 ### Finance & Receivables
 
 Invoicing, payments, outstanding receivables and customer exposure.
 
-![Finance and Receivables](docs/images/Finance%20%26%20Recv.png)
+<p align="center">
+  <img src="docs/images/Finance%20%26%20Recv.png" width="850">
+</p>
 
-## Example Metrics
+## Analytics Snapshot
 
 | Metric | Result |
 |---|---:|
@@ -214,19 +222,16 @@ srid-azure-data-platform/
 
 ## What This Project Demonstrates
 
-- Azure infrastructure provisioning with Terraform
-- ADLS Gen2 data-lake design
+- Infrastructure as Code with Terraform
+- ADLS Gen2 medallion architecture
 - Azure Data Factory orchestration
-- Databricks and PySpark processing
-- Delta Lake
-- Medallion architecture
+- Databricks, PySpark and Delta Lake processing
 - Data-quality and quarantine patterns
-- Azure security and RBAC
-- Microsoft Fabric and OneLake
-- Dimensional modelling
-- Power BI semantic modelling
-- DAX measures
-- Executive reporting and analytics
+- Azure RBAC and Key Vault security
+- Microsoft Fabric and OneLake integration
+- Star-schema dimensional modelling
+- Power BI semantic modelling and DAX
+- Executive and operational analytics
 
 ## Author
 
