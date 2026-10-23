@@ -1,315 +1,104 @@
-🚀 SRID Azure Data Platform
 
-End-to-End Azure Data Engineering & Analytics Platform
-
-Terraform • ADLS Gen2 • Azure Data Factory • Databricks • Delta Lake • Microsoft Fabric • Power BI
-
-<br>
-
-An enterprise-style cloud data platform demonstrating infrastructure as code,
-medallion architecture, data quality engineering, dimensional modelling,
-semantic modelling and interactive business analytics.
-
-</div>
-
-Data: This project uses synthetically generated business data designed to simulate a South African industrial distribution company.
-
-✨ Project Highlights
-
-☁️ Azure infrastructure provisioned using Terraform
-
-🗄️ Multi-layer ADLS Gen2 medallion architecture
-
-⚙️ Data transformation using Databricks, PySpark and Delta Lake
-
-✅ Data quality validation with a dedicated quarantine layer
-
-🔐 Azure-native security using RBAC, Entra ID and Key Vault
-
-📊 Business-ready Gold dimensional models
-
-🔗 Integration with Microsoft Fabric and OneLake
-
-🧠 Reusable Power BI semantic model and DAX measures
-
-📈 Four-page interactive executive analytics report
-
-📁 Source-controlled engineering artefacts in GitHub
-
-🏗️ Architecture
-
-flowchart LR
-
-    A[Source Data] --> B[ADLS Gen2<br/>Landing]
-    B --> C[Bronze Layer]
-    C --> D[Silver Layer]
-    D --> E{Data Quality}
-
-    E -->|Valid| F[Gold Layer]
-    E -->|Invalid| Q[Quarantine]
-
-    F --> G[Microsoft Fabric<br/>OneLake]
-    G --> H[Semantic Model]
-    H --> I[Power BI<br/>Analytics]
-
-Data Flow
-
-Source → Landing → Bronze → Silver → Gold → Fabric → Semantic Model → Power BI
-
-The platform separates raw ingestion, validated data and business-ready analytics into independent layers so each stage can be governed, monitored and maintained separately.
-
-🧰 Technology Stack
-
-<p>
-
-
-
-
-
-
-
-
-
-</p>
-
-Layer
-
-Technology
-
-☁️ Cloud
-
-Microsoft Azure
-
-🏗️ Infrastructure as Code
 
 Terraform
 
-🗄️ Data Lake
+Storage
 
-Azure Data Lake Storage Gen2
+ADLS Gen2
 
-🔄 Orchestration
+Orchestration
 
 Azure Data Factory
 
-⚙️ Processing
+Processing
 
-Azure Databricks
+Azure Databricks, PySpark
 
-🧮 Languages
-
-Python, PySpark, SQL, DAX
-
-🧱 Data Format
+Data format
 
 Delta Lake
 
-🔐 Secrets
+Security
 
-Azure Key Vault
+Entra ID, RBAC, Key Vault
 
-👤 Identity
+Monitoring
 
-Microsoft Entra ID / Azure RBAC
+Log Analytics
 
-📋 Monitoring
+Analytics
 
-Azure Log Analytics
+Microsoft Fabric, OneLake
 
-🟦 Analytics
-
-Microsoft Fabric / OneLake
-
-🧠 Semantic Layer
-
-Power BI Semantic Model
-
-📊 Reporting
+Semantic model
 
 Power BI
 
-🔧 Source Control
+Reporting
 
-Git / GitHub
+Power BI
 
-☁️ Azure Infrastructure
+Source control
 
-The development environment is provisioned using Terraform.
+GitHub
 
-Core Resources
+Data Platform
 
-Azure Resource
-
-Purpose
-
-rg-srid-data-dev-zan
-
-Development resource group
-
-stsriddatadevzan01
-
-ADLS Gen2 data lake
-
-adf-srid-data-dev-zan
-
-Data orchestration
-
-dbw-srid-data-dev-zan
-
-Databricks processing
-
-ac-srid-dbw-dev-zan
-
-Databricks access connector
-
-kv-srid-data-dev-zan
-
-Secrets management
-
-law-srid-data-dev-zan
-
-Centralised logging
-
-Storage Containers
+The platform uses separate ADLS Gen2 containers for:
 
 landing
-├── Raw source files
-
 bronze
-├── Raw persisted datasets
-
 silver
-├── Cleansed and validated data
-
 gold
-├── Business-ready analytical data
-
 quarantine
-└── Records failing quality validation
 
-📦 Source Data
-
-The platform models the operations of a South African industrial distribution company.
-
-Business Datasets
-
-Dataset
-
-Domain
+The source datasets cover:
 
 customers
 
-Customer master
-
 products
-
-Product master
 
 suppliers
 
-Supplier master
+sales orders
 
-sales_orders
-
-Sales headers
-
-sales_order_lines
-
-Sales transactions
+sales order lines
 
 invoices
 
-Customer invoicing
-
 payments
 
-Customer payments
+inventory snapshots
 
-inventory_snapshots
+purchase orders
 
-Inventory
+shipment events
 
-purchase_orders
-
-Procurement
-
-shipment_events
-
-Logistics
-
-The source-generation logic is version controlled in:
+The source-data generator is available at:
 
 scripts/generate_srid_data.py
 
-Detailed dataset structures and volumes are documented in:
+Dataset details are documented in:
 
 docs/dataset_inventory.md
 
-🥉🥈🥇 Medallion Architecture
+Data Processing
 
-🥉 Bronze — Raw
+The processing design follows a medallion pattern.
 
-The Bronze layer preserves source records in their raw analytical representation.
+Bronze preserves the raw source representation.
 
-It provides:
+Silver performs cleansing, type handling and data-quality validation, including primary-key checks, null validation, transaction rules and referential-integrity checks.
 
-Traceability
+Records that fail validation can be separated into the quarantine layer.
 
-Replayability
+Gold provides business-ready models for sales, finance, inventory and procurement reporting.
 
-Historical source preservation
+Microsoft Fabric and Semantic Model
 
-Separation between ingestion and transformation
+Gold datasets are exposed to Microsoft Fabric through OneLake.
 
-🥈 Silver — Validated
-
-The Silver layer standardises and validates raw data.
-
-Quality Controls
-
-Primary-key validation
-
-Null checks
-
-Data-type validation
-
-Numerical business rules
-
-Transaction calculation checks
-
-Referential integrity checks
-
-Records failing validation can be routed to the quarantine layer instead of entering trusted downstream datasets.
-
-🥇 Gold — Business Ready
-
-The Gold layer transforms validated records into analytical structures optimised for reporting.
-
-Business domains include:
-
-Sales
-
-Customers
-
-Finance
-
-Receivables
-
-Inventory
-
-Procurement
-
-Suppliers
-
-🟦 Microsoft Fabric Integration
-
-Gold datasets are exposed to Microsoft Fabric through OneLake shortcuts.
-
-This allows the analytics layer to work with Gold data while avoiding unnecessary duplication of the underlying analytical datasets.
-
-The Fabric environment provides the analytical surface used by the semantic model and Power BI report.
-
-Analytical Model
+The reporting model uses a star-schema design with the following core tables:
 
 Dimensions
 
@@ -331,74 +120,11 @@ dim_date_import
 
 fact_procurement
 
-The model follows a star-schema approach with active, single-direction relationships from dimensions to fact tables.
+The date dimension is related to the fact tables through sales order date, invoice date, inventory snapshot date and procurement order date.
 
-Relationship Pattern
+Reusable DAX measures include:
 
-dim_customer
-      │
-      ├──────────────▶ fact_sales
-      │
-      └──────────────▶ fact_finance
-
-
-dim_product
-      │
-      ├──────────────▶ fact_sales
-      ├──────────────▶ fact_inventory
-      └──────────────▶ fact_procurement
-
-
-dim_supplier
-      │
-      └──────────────▶ fact_procurement
-
-
-dim_date_import
-      │
-      ├──────────────▶ fact_sales
-      ├──────────────▶ fact_inventory
-      ├──────────────▶ fact_finance
-      └──────────────▶ fact_procurement
-
-📅 Date Dimension
-
-A dedicated date dimension supports consistent analysis across business domains.
-
-It includes:
-
-Date
-
-Year
-
-Quarter
-
-Month number
-
-Month name
-
-Year-month
-
-Week number
-
-Day
-
-Day name
-
-dim_date_import is related to:
-
-fact_sales[order_date]
-fact_inventory[snapshot_date]
-fact_finance[invoice_date]
-fact_procurement[order_date]
-
-This enables consistent filtering and trend analysis across the sales, finance, inventory and procurement domains.
-
-🧠 Semantic Model
-
-Reusable DAX measures provide a governed business-metrics layer.
-
-💰 Sales
+Sales
 
 Total Sales
 
@@ -408,7 +134,7 @@ Units Sold
 
 Average Order Value
 
-💳 Finance
+Finance
 
 Total Invoiced
 
@@ -418,7 +144,7 @@ Outstanding Receivables
 
 Invoice Count
 
-📦 Inventory
+Inventory
 
 Inventory Value
 
@@ -426,7 +152,7 @@ Stock On Hand
 
 Available Stock
 
-🚚 Procurement
+Procurement
 
 Procurement Spend
 
@@ -434,383 +160,132 @@ Purchase Orders
 
 Quantity Ordered
 
-The same measures are reused across all report pages instead of embedding calculation logic into individual visuals.
+Power BI Report
 
-📊 SRID Executive Analytics
+The final report contains four pages.
 
-The Power BI reporting solution contains four interactive analytical views.
+Executive Overview
 
-1️⃣ Executive Overview
-
-A consolidated management view across sales, finance, inventory and procurement.
-
-Key KPIs
-
-R7.40bn Total Sales • 15K Sales Orders • R497.82K AOV • R7.98bn Invoiced • R1.74bn Outstanding Receivables
-
-Analysis
-
-Monthly Sales Trend
-
-Sales by Product Category
-
-Sales by Province
-
-Outstanding Receivables by Status
-
-Interactive Month and Province filters
-
-<br>
+Management-level view of sales, finance, inventory and procurement.
 
 
 
-2️⃣ Sales & Customers
+Sales & Customers
 
-Detailed customer and commercial-performance analysis.
-
-Analysis
-
-Top 10 Customers by Sales
-
-Sales by Order Channel
-
-Sales by Industry
-
-Monthly Sales Trend
-
-Province filtering
-
-Month filtering
-
-<br>
+Customer performance, sales channels, industries and monthly sales trends.
 
 
 
-3️⃣ Inventory & Procurement
+Inventory & Procurement
 
-Operational visibility across inventory, suppliers and purchasing.
-
-Analysis
-
-Inventory Value by Product Category
-
-Stock On Hand by Product Category
-
-Procurement Spend by Supplier
-
-Purchase Orders by Supplier
-
-Inventory Value by Location
-
-Procurement Spend Trend
-
-Month filtering
-
-Product-category filtering
-
-<br>
+Inventory position, supplier activity, purchasing and procurement trends.
 
 
 
-4️⃣ Finance & Receivables
+Finance & Receivables
 
-Accounts-receivable and invoicing analytics.
-
-Key KPIs
-
-R7.98bn Invoiced • R6.23bn Paid • R1.74bn Outstanding • 14K Invoices
-
-Analysis
-
-Outstanding Receivables by Status
-
-Invoiced vs Paid by Month
-
-Top 10 Customers by Outstanding Receivables
-
-Invoice Count by Status
-
-Province filtering
-
-Month filtering
-
-<br>
+Invoicing, payments, outstanding receivables and customer exposure.
 
 
 
-📈 Platform Metrics
+Example Metrics
 
 Metric
 
 Result
 
-💰 Total Sales
+Total Sales
 
 R7.40bn
 
-🧾 Sales Orders
+Sales Orders
 
 15K
 
-📊 Average Order Value
+Average Order Value
 
 R497.82K
 
-💳 Total Invoiced
+Total Invoiced
 
 R7.98bn
 
-✅ Total Paid
+Total Paid
 
 R6.23bn
 
-⚠️ Outstanding Receivables
+Outstanding Receivables
 
 R1.74bn
 
-📦 Inventory Value
+Inventory Value
 
 R62.51bn
 
-🚚 Procurement Spend
+Procurement Spend
 
 R5.32bn
 
-🔐 Security & Governance
+Security and Monitoring
 
-Security is designed around Azure-native identity and access management.
+The platform uses Azure-native security controls including Entra ID, RBAC, Key Vault and controlled storage access.
 
-Implemented controls include:
+Azure Log Analytics provides the monitoring foundation for the environment.
 
-Microsoft Entra authentication
+More detail is available in:
 
-Azure RBAC
-
-Azure Key Vault
-
-Controlled ADLS permissions
-
-Databricks access connector
-
-Managed analytical access
-
-More detail:
+docs/architecture.md
 
 docs/security.md
 
-📡 Monitoring & Operations
+docs/dataset_inventory.md
 
-Azure Log Analytics provides a foundation for operational monitoring and troubleshooting.
+Repository Structure
 
-The platform separates:
-
-Infrastructure
-      ↓
-Ingestion
-      ↓
-Storage
-      ↓
-Transformation
-      ↓
-Data Quality
-      ↓
-Analytics
-
-This allows failures to be investigated at the appropriate engineering layer rather than treating the platform as a single black box.
-
-📁 Repository Structure
-
-srid-azure-data-platform
-│
-├── docs
-│   ├── images
-│   │   ├── Exec Overview.png
-│   │   ├── Sales & Cust.png
-│   │   ├── Inv & Proc.png
-│   │   └── Finance & Recv.png
-│   │
+srid-azure-data-platform/
+├── docs/
+│   ├── images/
 │   ├── architecture.md
 │   ├── dataset_inventory.md
 │   └── security.md
-│
-├── scripts
+├── scripts/
 │   └── generate_srid_data.py
-│
-├── terraform
-│   └── environments
-│       └── dev
+├── terraform/
+│   └── environments/
+│       └── dev/
 │           └── main.tf
-│
 ├── .gitignore
 ├── LICENSE
 └── README.md
 
-📚 Documentation
+What This Project Demonstrates
 
-Document
+Azure infrastructure provisioning with Terraform
 
-Description
-
-architecture.md
-
-Platform architecture and engineering design
-
-dataset_inventory.md
-
-Dataset definitions and volumes
-
-security.md
-
-Identity, RBAC and security controls
-
-🧭 Engineering Principles
-
-This platform was built around production-style engineering principles:
-
-Infrastructure should be repeatable and version controlled.
-
-Source data should remain immutable after landing.
-
-Raw, validated and analytical datasets should remain separated.
-
-Invalid records should be quarantined rather than silently discarded.
-
-Business logic should be applied before reporting.
-
-Metrics should be defined once and reused.
-
-Analytical models should follow clear dimensional relationships.
-
-Security and monitoring should be designed into the platform.
-
-🎯 What This Project Demonstrates
-
-This project demonstrates hands-on capability across the complete modern data-platform lifecycle.
-
-☁️ Cloud Engineering
-
-Azure resource design
-
-Terraform
-
-Infrastructure as Code
-
-Microsoft Entra ID
-
-Azure RBAC
-
-Key Vault
-
-Log Analytics
-
-Access control
-
-⚙️ Data Engineering
-
-ADLS Gen2
-
-Azure Data Factory
-
-Databricks
-
-Python
-
-PySpark
-
-Delta Lake
+ADLS Gen2 data-lake design
 
 Medallion architecture
 
-Data-quality engineering
+Databricks and PySpark processing
 
-Quarantine patterns
+Delta Lake
 
-Business transformations
+Data-quality and quarantine patterns
 
-🟦 Analytics Engineering
+Azure security and RBAC
 
-Microsoft Fabric
-
-OneLake
-
-SQL analytics
+Microsoft Fabric and OneLake
 
 Dimensional modelling
 
-Star schema design
-
-Semantic modelling
-
-Date dimensions
+Power BI semantic modelling
 
 DAX measures
 
-📊 Business Intelligence
+Executive reporting and business analytics
 
-Power BI
-
-KPI development
-
-Interactive slicers
-
-Executive dashboards
-
-Sales analytics
-
-Customer analytics
-
-Finance analytics
-
-Inventory analytics
-
-Procurement analytics
-
-🔧 Engineering Workflow
-
-Git
-
-GitHub
-
-Version control
-
-Documentation
-
-Reusable infrastructure
-
-Source-controlled data-generation logic
-
-🚀 Key Outcomes
-
-The project demonstrates an end-to-end flow from cloud infrastructure through to business intelligence:
-
-Terraform
-    ↓
-Azure Infrastructure
-    ↓
-ADLS Gen2
-    ↓
-Landing
-    ↓
-Bronze
-    ↓
-Silver
-    ↓
-Gold
-    ↓
-Microsoft Fabric
-    ↓
-Semantic Model
-    ↓
-Power BI
-    ↓
-Business Insights
-
-Rather than focusing on one isolated technology, the project demonstrates how multiple Azure and Microsoft analytics services can work together as a complete modern data platform.
-
-<div align="center">
-
-👤 Author
+Author
 
 Takudzwa Mhandire
 
-Azure Data Engineering • Microsoft Fabric • Databricks • Terraform • Power BI
+Azure Data Engineering | Microsoft Fabric | Databricks | Terraform | Power BI
