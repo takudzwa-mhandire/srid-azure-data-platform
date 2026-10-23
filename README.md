@@ -1,4 +1,49 @@
+SRID Azure Data Platform
 
+End-to-end Azure data engineering platform covering infrastructure provisioning, data ingestion, medallion architecture, data quality, dimensional modelling, Microsoft Fabric and Power BI reporting.
+
+The project models a South African industrial distribution business using synthetically generated data.
+
+Architecture
+
+Source Data
+    |
+    v
+ADLS Gen2 Landing
+    |
+    v
+Bronze
+    |
+    v
+Silver
+    |
+    +----> Quarantine
+    |
+    v
+Gold
+    |
+    v
+Microsoft Fabric / OneLake
+    |
+    v
+Semantic Model
+    |
+    v
+Power BI
+
+The platform separates raw source data, validated datasets and business-ready analytical models so that each stage can be managed independently.
+
+Technology
+
+Area
+
+Technology
+
+Cloud
+
+Microsoft Azure
+
+Infrastructure
 
 Terraform
 
